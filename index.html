@@ -242,6 +242,17 @@ section.block{padding-block:clamp(64px,10vw,140px)}
 .copy:hover{border-color:var(--ink);color:var(--ink)}
 .copy:focus-visible{outline:2px solid var(--stamp)}
 .sel{user-select:all}
+/* ---------- build in public ---------- */
+.posts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+@media (max-width:820px){.posts{grid-template-columns:1fr}}
+.post{border:1.5px solid var(--ink);padding:22px;display:flex;flex-direction:column;gap:12px;background:var(--paper)}
+.post .when{display:flex;justify-content:space-between;gap:12px;font-family:var(--mono);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.post blockquote{margin:0;font-family:var(--display);font-size:var(--s1);font-weight:650;line-height:1.25;text-wrap:balance}
+.post p{color:var(--ink-2);font-size:.95rem}
+.post .stats{margin-top:auto;display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--mono);font-size:.8rem;border-top:1px dashed var(--rule);padding-top:10px;font-variant-numeric:tabular-nums}
+.post .stats b{color:var(--stamp)}
+.followers{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-top:24px;font-family:var(--mono);font-size:.85rem;color:var(--ink-2)}
+.followers b{font-family:var(--display);font-size:clamp(2.4rem,6vw,4rem);font-weight:900;font-variation-settings:"wdth" 120;color:var(--ink);letter-spacing:-.04em;line-height:1}
 footer{padding-block:28px 40px;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;font-family:var(--mono);font-size:.78rem;color:var(--ink-2)}
 </style>
 
@@ -255,6 +266,7 @@ footer{padding-block:28px 40px;display:flex;flex-wrap:wrap;gap:8px 24px;justify-
       <a href="#trovehaul">Trovehaul.ai</a>
       <a href="#work">Work</a>
       <a href="#experience">Experience</a>
+      <a href="#public">Posts</a>
       <a href="#misses">Misses</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -294,12 +306,14 @@ footer{padding-block:28px 40px;display:flex;flex-wrap:wrap;gap:8px 24px;justify-
       <span><b>64 / 64</b> exceptions published, wrong ones included</span>
       <span><b>23%</b> auto-resolve rate, kept low on purpose</span>
       <span><b>1</b> price floor the voice agent cannot cross</span>
+      <span><b>1,774</b> people following the build on LinkedIn</span>
       <span class="dup" aria-hidden="true"><b>70.19%</b> of carts abandoned: the number Kiran was built against</span>
       <span class="dup" aria-hidden="true"><b>81.7%</b> of records matched by rules before any model ran</span>
       <span class="dup" aria-hidden="true"><b>0</b> API calls for 19 of 64 reconciliation exceptions</span>
       <span class="dup" aria-hidden="true"><b>64 / 64</b> exceptions published, wrong ones included</span>
       <span class="dup" aria-hidden="true"><b>23%</b> auto-resolve rate, kept low on purpose</span>
       <span class="dup" aria-hidden="true"><b>1</b> price floor the voice agent cannot cross</span>
+      <span class="dup" aria-hidden="true"><b>1,774</b> people following the build on LinkedIn</span>
     </div>
   </div>
 
@@ -592,6 +606,44 @@ footer{padding-block:28px 40px;display:flex;flex-wrap:wrap;gap:8px 24px;justify-
   </section>
   <div class="peek" id="peek" aria-hidden="true"></div>
 
+
+
+  <!-- ================= BUILD IN PUBLIC ================= -->
+  <section class="block" id="public" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="tag">Building in public</p><h2>What I post</h2></div>
+        <p>I share the build while it's happening, including the parts still in testing. These are the posts that started the most conversations on LinkedIn.</p>
+      </div>
+      <div class="posts">
+        <article class="post">
+          <div class="when"><span>Internship alert bot</span><span>n8n · Telegram</span></div>
+          <blockquote>"Big projects are good, but projects that solve your daily problems are the best."</blockquote>
+          <p>Scrolling LinkedIn for internships every day was slow and easy to miss things. So I automated my own problem: new openings now arrive in Telegram with role, company and location, ready to filter and apply.</p>
+          <div class="stats"><span><b>54</b> reactions</span><span><b>1,850</b> impressions</span><span>Featured</span></div>
+        </article>
+        <article class="post">
+          <div class="when"><span>Spotify MCP server</span><span>Python · MCP</span></div>
+          <blockquote>"Ever wanted to ask Claude to play that song I was listening to yesterday, and have it actually happen?"</blockquote>
+          <p>An MCP server that connects any compatible AI assistant to the Spotify Web API: playback, search, playlists on the fly, recommendations and listening analysis. Built to the full protocol spec.</p>
+          <div class="stats"><span><b>55</b> reactions</span><span><b>2,200</b> impressions</span><span>Featured</span></div>
+        </article>
+        <article class="post">
+          <div class="when"><span>A little confession</span><span>n8n · LinkedIn</span></div>
+          <blockquote>"You might've noticed I've been posting daily AI facts and news. It wasn't me manually doing it every day."</blockquote>
+          <p>I ran the LinkedIn engine on my own profile, quietly, while it was still in testing, then told people how it worked. Automation should work for you while you sleep.</p>
+          <div class="stats"><span><b>31</b> reactions</span><span><b>993</b> impressions</span><span>Featured</span></div>
+        </article>
+        <article class="post">
+          <div class="when"><span>Kiran launch</span><span>Sep 2026</span></div>
+          <blockquote>"Nearly 70% of online shopping carts get abandoned. The standard fix? A recovery email that sits…"</blockquote>
+          <p>The launch post for the voice agent, opened the same way the README does: the number first, then the fix. I also write explainers, like why XGBoost made tabular ML competitions feel unfair.</p>
+          <div class="stats"><span>Latest post</span><span>Also: XGBoost explainer, Jul 2026</span></div>
+        </article>
+      </div>
+      <div class="followers"><b>1,774</b><span>people follow the build on <a href="https://www.linkedin.com/in/abhijith-chandrasekhar04" target="_blank" rel="noopener">LinkedIn ↗</a></span></div>
+    </div>
+  </section>
 
   <!-- ================= EXPERIENCE ================= -->
   <section class="block" id="experience" style="padding-top:0">
