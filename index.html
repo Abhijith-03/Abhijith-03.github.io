@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta property="og:title" content="Abhijith Chandrasekhar">
+<meta property="og:description" content="I write the guardrail before the feature, and I publish what went wrong. Founder of Trovehaul.ai.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0E1116">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230E1116'/%3E%3Ctext x='32' y='45' font-family='Arial Black,Arial' font-weight='900' font-size='36' text-anchor='middle' fill='%23E8EBEF'%3EA%3C/text%3E%3Ccircle cx='50' cy='44' r='5' fill='%232C3BEB'/%3E%3C/svg%3E">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Abhijith Chandrasekhar</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Abhijith Chandrasekhar builds AI systems with the guardrail written first and the misses published. Founder of Trovehaul.ai.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Instrument+Sans:wght@400..700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one long scroll read like a builder's logbook. Giant expanded type for claims, mono "receipts" for the evidence behind each claim. */
+:root{
+  --paper:#E8EBEF;      /* cool drafting paper */
+  --paper-2:#DCE0E6;
+  --ink:#0E1116;
+  --ink-2:#565E6B;
+  --rule:#C3C9D2;
+  --stamp:#2C3BEB;      /* ultramarine ink stamp */
+  --stamp-ink:#FFFFFF;
+  --hl:#F2DC4B;         /* highlighter */
+  --hl-ink:#0E1116;
+  --ok:#1F7A4D;
+  --plan:#9A6A00;
+  --display:"Archivo","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  --body:"Instrument Sans","Segoe UI",system-ui,-apple-system,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --s-1:.8125rem; --s0:1.0625rem; --s1:1.3rem; --s2:clamp(1.5rem,2.6vw,2rem); --s3:clamp(2.2rem,5vw,4rem); --s4:min(6.6vw,6.4rem);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0C0E12; --paper-2:#151922; --ink:#E7EAF0; --ink-2:#8E97A6; --rule:#262C37;
+  --stamp:#8090FF; --stamp-ink:#0C0E12; --hl:#E8D24A; --hl-ink:#0C0E12; --ok:#5CCB92; --plan:#E2B04A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0C0E12; --paper-2:#151922; --ink:#E7EAF0; --ink-2:#8E97A6; --rule:#262C37;
+  --stamp:#8090FF; --stamp-ink:#0C0E12; --hl:#E8D24A; --hl-ink:#0C0E12; --ok:#5CCB92; --plan:#E2B04A; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:var(--s0);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--paper)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--stamp);outline-offset:3px;border-radius:2px}
+h1,h2,h3{margin:0;font-family:var(--display);text-wrap:balance;line-height:.95;letter-spacing:-.02em}
+p{margin:0}
+.wrap{max-width:1320px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+@media (min-width:760px){.wrap{padding-left:max(40px,env(safe-area-inset-left,0px));padding-right:max(40px,env(safe-area-inset-right,0px))}}
+.mono{font-family:var(--mono)}
+.tag{font-family:var(--mono);font-size:var(--s-1);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+mark{background:linear-gradient(transparent 12%,var(--hl) 12%,var(--hl) 88%,transparent 88%);color:var(--hl-ink);padding:0 .15em}
+
+/* ---------- top bar ---------- */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--paper) 86%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--rule)}
+.bar{display:flex;align-items:center;gap:20px;padding-block:12px}
+.mark{font-family:var(--display);font-weight:850;font-variation-settings:"wdth" 125;font-size:1.05rem;text-decoration:none;letter-spacing:-.01em}
+.mark span{color:var(--stamp)}
+nav.links{display:flex;gap:18px;margin-left:auto;font-size:.92rem}
+nav.links a{text-decoration:none;color:var(--ink-2)}
+nav.links a:hover{color:var(--ink)}
+.iconbtn{all:unset;cursor:pointer;width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--rule);border-radius:50%}
+.iconbtn:hover{border-color:var(--ink)}
+.iconbtn:focus-visible{outline:2px solid var(--stamp)}
+@media (max-width:720px){nav.links{display:none}.iconbtn{margin-left:auto}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;padding-block:clamp(40px,7vw,96px) clamp(36px,6vw,72px);overflow:hidden;isolation:isolate}
+.hero .spot{position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(520px circle at var(--mx,70%) var(--my,30%),color-mix(in srgb,var(--stamp) 16%,transparent),transparent 62%)}
+.hero .tag{display:flex;flex-wrap:wrap;gap:6px 18px}
+.hero .tag b{color:var(--ink);font-weight:600}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ok);margin-right:7px;vertical-align:1px;box-shadow:0 0 0 4px color-mix(in srgb,var(--ok) 22%,transparent)}
+.name{font-size:var(--s4);font-weight:900;font-variation-settings:"wdth" 125;line-height:.82;letter-spacing:-.045em;margin-top:22px;text-transform:uppercase}
+.name .ln:first-child{font-size:1.55em}
+.name .ln{display:block}
+.name .ch{display:inline-block;transition:transform .7s cubic-bezier(.2,.8,.2,1),color .3s}
+.name .ln:last-child{color:transparent;-webkit-text-stroke:2px var(--ink)}
+@media (max-width:520px){.name .ln:last-child{-webkit-text-stroke-width:1.2px}}
+.name .ch:hover{color:var(--stamp);-webkit-text-stroke-color:var(--stamp)}
+.hero-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:clamp(24px,5vw,72px);margin-top:clamp(28px,4vw,48px);align-items:end}
+@media (max-width:860px){.hero-grid{grid-template-columns:1fr}}
+.thesis{font-family:var(--display);font-size:var(--s2);font-weight:600;font-variation-settings:"wdth" 100;line-height:1.15;letter-spacing:-.015em;max-width:24ch;text-wrap:balance}
+.lede{color:var(--ink-2);max-width:52ch}
+.lede strong{color:var(--ink);font-weight:600}
+.cta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;font-size:.95rem;padding:11px 18px;border-radius:999px;border:1.5px solid var(--ink)}
+.btn.solid{background:var(--ink);color:var(--paper)}
+.btn:hover{background:var(--stamp);border-color:var(--stamp);color:var(--stamp-ink)}
+
+/* ---------- receipt ticker ---------- */
+.ticker{border-block:1px solid var(--rule);overflow:hidden;background:var(--paper-2)}
+.ticker .track{display:flex;gap:48px;width:max-content;padding-block:14px;animation:slide 48s linear infinite;font-family:var(--mono);font-size:.9rem;white-space:nowrap}
+.ticker .track span b{color:var(--stamp);font-weight:600}
+.ticker:hover .track{animation-play-state:paused}
+@keyframes slide{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.ticker .track{animation:none;flex-wrap:wrap;width:auto;white-space:normal;gap:10px 32px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}.ticker .dup{display:none}}
+
+/* ---------- sections ---------- */
+section.block{padding-block:clamp(64px,10vw,140px)}
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:24px 64px;align-items:end;margin-bottom:clamp(36px,6vw,72px)}
+@media (max-width:860px){.sec-head{grid-template-columns:1fr}}
+.sec-head h2{font-size:var(--s3);font-weight:850;font-variation-settings:"wdth" 112;text-transform:uppercase;letter-spacing:-.03em}
+.sec-head p{color:var(--ink-2);max-width:56ch}
+
+/* ---------- principles ---------- */
+.rule{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:24px clamp(24px,5vw,72px);padding-block:clamp(32px,5vw,56px);border-top:1px solid var(--rule)}
+.rule:last-child{border-bottom:1px solid var(--rule)}
+@media (max-width:860px){.rule{grid-template-columns:1fr}}
+.rule h3{font-size:clamp(2rem,5.6vw,4.6rem);font-weight:800;font-variation-settings:"wdth" 92;line-height:.98;letter-spacing:-.035em}
+.rule h3 .w{color:color-mix(in srgb,var(--ink) 42%,var(--paper));transition:color .25s}
+.rule h3 .w.on{color:var(--ink)}
+.lens{margin:18px 0 0;display:grid;gap:12px;max-width:58ch}
+.lens div{display:grid;grid-template-columns:5.5rem minmax(0,1fr);gap:12px;align-items:baseline}
+.lens dt{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:999px;text-align:center;border:1px solid var(--stamp);color:var(--stamp)}
+.lens div:first-child dt{background:var(--hl);border-color:var(--hl);color:var(--hl-ink)}
+.lens dd{margin:0;color:var(--ink-2)}
+.receipt{align-self:start;font-family:var(--mono);font-size:.84rem;line-height:1.55;background:var(--paper-2);border:1px dashed var(--rule);padding:18px 18px 16px;position:relative}
+.receipt::before{content:"";position:absolute;left:0;right:0;top:-1px;height:8px;background:radial-gradient(circle at 6px -2px,var(--paper) 5px,transparent 5.5px) 0 0/12px 8px repeat-x}
+.receipt .src{display:flex;justify-content:space-between;gap:10px;color:var(--ink-2);font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px dashed var(--rule);padding-bottom:8px;margin-bottom:10px}
+.receipt .src a{color:var(--stamp);text-decoration:none}
+.receipt .src a:hover{text-decoration:underline}
+.receipt ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.receipt li{position:relative;padding-left:18px}
+.receipt li::before{content:"›";color:var(--stamp);position:absolute;left:0}
+.receipt code{font-family:inherit;background:var(--hl);color:var(--hl-ink);padding:0 .2em}
+.receipt .tot{margin-top:10px;padding-top:8px;border-top:1px dashed var(--rule);display:flex;justify-content:space-between;gap:12px;font-weight:600}
+
+/* ---------- venture ---------- */
+.venture{background:var(--ink);color:var(--paper)}
+.venture .tag{color:color-mix(in srgb,var(--paper) 60%,var(--ink))}
+.venture .sec-head p{color:color-mix(in srgb,var(--paper) 72%,var(--ink))}
+.v-name{font-size:clamp(3rem,12vw,10rem);font-weight:900;font-variation-settings:"wdth" 125;text-transform:lowercase;letter-spacing:-.05em;line-height:.85}
+.v-name span{color:var(--hl)}
+.memo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:color-mix(in srgb,var(--paper) 18%,var(--ink));border:1px solid color-mix(in srgb,var(--paper) 18%,var(--ink));margin-top:clamp(32px,5vw,56px)}
+@media (max-width:860px){.memo{grid-template-columns:1fr}}
+.memo > div{background:var(--ink);padding:24px}
+.memo h4{margin:0 0 10px;font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--hl);font-weight:600}
+.memo p{color:color-mix(in srgb,var(--paper) 82%,var(--ink))}
+.board{margin-top:clamp(32px,5vw,56px);display:grid;gap:0}
+.board .row{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,2fr) auto;gap:8px 24px;padding-block:16px;border-top:1px solid color-mix(in srgb,var(--paper) 18%,var(--ink));align-items:baseline}
+.board .row:last-child{border-bottom:1px solid color-mix(in srgb,var(--paper) 18%,var(--ink))}
+.board b{font-family:var(--display);font-size:1.25rem;font-weight:700;font-variation-settings:"wdth" 105}
+.board p{color:color-mix(in srgb,var(--paper) 74%,var(--ink));font-size:.95rem}
+.pill{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.pill.build{color:var(--hl)}
+.pill.plan{color:color-mix(in srgb,var(--paper) 60%,var(--ink))}
+.pill.live{color:#7BE0A8}
+@media (max-width:640px){.board .row{grid-template-columns:1fr auto}.board p{grid-column:1/-1;grid-row:2}}
+.phases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:clamp(32px,5vw,56px)}
+@media (max-width:760px){.phases{grid-template-columns:1fr}}
+.phase{border-top:3px solid var(--hl);padding-top:14px}
+.phase:nth-child(2){border-top-color:color-mix(in srgb,var(--hl) 55%,var(--ink))}
+.phase:nth-child(3){border-top-color:color-mix(in srgb,var(--hl) 25%,var(--ink))}
+.phase .tag{display:block;margin-bottom:6px}
+.phase b{font-family:var(--display);font-size:1.35rem;font-variation-settings:"wdth" 105;display:block;margin-bottom:6px}
+.phase p{color:color-mix(in srgb,var(--paper) 74%,var(--ink));font-size:.95rem}
+.v-foot{margin-top:clamp(32px,5vw,56px);display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between}
+.v-foot .btn{border-color:var(--paper);color:var(--paper)}
+.v-foot .btn:hover{background:var(--hl);border-color:var(--hl);color:var(--hl-ink)}
+.v-foot small{font-family:var(--mono);font-size:.78rem;color:color-mix(in srgb,var(--paper) 58%,var(--ink));max-width:60ch}
+
+/* ---------- work index ---------- */
+.index{border-top:1px solid var(--ink)}
+.case{border-bottom:1px solid var(--rule)}
+.case summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:4.5rem minmax(0,1fr) auto;gap:16px;align-items:baseline;padding-block:clamp(16px,2.4vw,26px);transition:padding .3s,background .3s}
+.case summary::-webkit-details-marker{display:none}
+.case summary:hover{padding-left:12px;background:linear-gradient(90deg,color-mix(in srgb,var(--stamp) 10%,transparent),transparent 70%)}
+.case .yr{font-family:var(--mono);font-size:.82rem;color:var(--ink-2)}
+.case .tt{font-family:var(--display);font-size:clamp(1.6rem,4.4vw,3.4rem);font-weight:800;font-variation-settings:"wdth" 108;letter-spacing:-.03em;line-height:1;text-transform:uppercase}
+.case .tt small{display:block;font-family:var(--body);text-transform:none;font-size:var(--s0);font-weight:500;letter-spacing:0;color:var(--ink-2);margin-top:8px;font-variation-settings:normal;line-height:1.4}
+.case .plus{font-family:var(--mono);font-size:1.4rem;transition:transform .3s;color:var(--stamp)}
+.case[open] .plus{transform:rotate(45deg)}
+.case .body{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px 28px;padding:4px 0 32px 4.5rem;padding-left:calc(4.5rem + 16px)}
+@media (max-width:860px){.case .body{grid-template-columns:repeat(2,minmax(0,1fr));padding-left:0}.case summary{grid-template-columns:3.2rem minmax(0,1fr) auto}}
+@media (max-width:520px){.case .body{grid-template-columns:1fr}}
+.case .body h5{margin:0 0 6px;font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--stamp);font-weight:600}
+.case .body p{font-size:.95rem;color:var(--ink-2)}
+.case .body p strong{color:var(--ink);font-weight:600}
+.case .body .links{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;font-family:var(--mono);font-size:.82rem}
+.case .body .links a{color:var(--stamp)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{font-family:var(--mono);font-size:.72rem;border:1px solid var(--rule);border-radius:999px;padding:2px 9px;color:var(--ink-2)}
+.peek{position:fixed;left:0;top:0;z-index:40;pointer-events:none;width:270px;background:var(--stamp);color:var(--stamp-ink);padding:14px 16px;font-family:var(--mono);font-size:.8rem;line-height:1.45;transform:translate(-9999px,0);transition:opacity .2s;opacity:0}
+.peek b{display:block;font-family:var(--display);font-size:2rem;font-weight:850;font-variation-settings:"wdth" 110;line-height:1;margin-bottom:6px}
+@media (hover:none){.peek{display:none}}
+
+/* ---------- misses ---------- */
+.misses{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+@media (max-width:900px){.misses{grid-template-columns:1fr}}
+.miss{border:1.5px solid var(--ink);padding:22px;display:flex;flex-direction:column;gap:12px;background:var(--paper)}
+.miss .n{font-family:var(--display);font-size:clamp(2.6rem,6vw,4rem);font-weight:900;font-variation-settings:"wdth" 120;line-height:.9;letter-spacing:-.04em}
+.miss .n em{font-style:normal;color:var(--stamp)}
+.miss p{color:var(--ink-2);font-size:.96rem}
+.miss .fix{margin-top:auto;font-family:var(--mono);font-size:.8rem;border-top:1px dashed var(--rule);padding-top:10px}
+.miss .fix b{color:var(--ink)}
+
+/* ---------- arc ---------- */
+.arc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(24px,5vw,64px)}
+@media (max-width:800px){.arc{grid-template-columns:1fr}}
+.arc h3{font-size:var(--s2);font-weight:800;font-variation-settings:"wdth" 108;text-transform:uppercase;margin-bottom:6px}
+.arc .tag{display:block;margin-bottom:14px}
+.log{list-style:none;margin:0;padding:0;border-left:2px solid var(--rule)}
+.log li{position:relative;padding:0 0 18px 20px}
+.log li::before{content:"";position:absolute;left:-6px;top:.5em;width:10px;height:10px;border-radius:50%;background:var(--paper);border:2px solid var(--ink-2)}
+.log.now li::before{border-color:var(--stamp);background:var(--stamp)}
+.log time{font-family:var(--mono);font-size:.78rem;color:var(--ink-2);display:block}
+.log b{font-weight:600}
+.log span{color:var(--ink-2);font-size:.94rem}
+.shift{margin-top:clamp(28px,4vw,48px);font-family:var(--display);font-size:var(--s2);font-weight:600;line-height:1.2;max-width:34ch;text-wrap:balance}
+
+/* ---------- contact ---------- */
+.contact{border-top:1px solid var(--rule);padding-block:clamp(64px,10vw,140px) 40px}
+.contact h2{font-size:clamp(2.6rem,10vw,8.5rem);font-weight:900;font-variation-settings:"wdth" 125;text-transform:uppercase;letter-spacing:-.045em;line-height:.86}
+.contact h2 a{text-decoration:none;background:linear-gradient(var(--stamp),var(--stamp)) 0 100%/0 .08em no-repeat;transition:background-size .5s}
+.contact h2 a:hover{background-size:100% .08em;color:var(--stamp)}
+.c-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:clamp(32px,5vw,56px)}
+@media (max-width:760px){.c-grid{grid-template-columns:1fr}}
+.c-grid > div{border-top:1px solid var(--ink);padding-top:12px}
+.c-grid a{color:var(--ink);font-weight:600}
+.c-grid p{color:var(--ink-2);font-size:.95rem;margin-top:4px}
+/* ---------- experience ---------- */
+.xp{display:grid;gap:0;border-top:1px solid var(--ink)}
+.xp-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:16px clamp(24px,5vw,64px);padding-block:clamp(24px,4vw,40px);border-bottom:1px solid var(--rule)}
+@media (max-width:860px){.xp-row{grid-template-columns:1fr}}
+.xp-row .org{font-family:var(--display);font-size:var(--s2);font-weight:800;font-variation-settings:"wdth" 108;line-height:1.05;text-transform:uppercase;letter-spacing:-.02em}
+.xp-row .meta{font-family:var(--mono);font-size:.78rem;color:var(--ink-2);margin-top:8px;display:grid;gap:2px}
+.xp-row .ask{font-family:var(--display);font-size:var(--s1);font-weight:650;line-height:1.25;margin-bottom:10px;text-wrap:balance}
+.xp-row ul{margin:0;padding-left:1.1em;color:var(--ink-2);display:grid;gap:6px}
+.xp-row ul strong{color:var(--ink);font-weight:600}
+.side{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:clamp(28px,4vw,44px)}
+@media (max-width:860px){.side{grid-template-columns:1fr}}
+.side > div{border:1.5px solid var(--ink);padding:18px 20px}
+.side b{display:block;font-family:var(--display);font-size:1.15rem;font-variation-settings:"wdth" 105;margin:4px 0 6px}
+.side p{color:var(--ink-2);font-size:.94rem}
+.copy{all:unset;cursor:pointer;font-family:var(--mono);font-size:.74rem;border:1px solid var(--rule);border-radius:999px;padding:2px 10px;margin-left:8px;color:var(--ink-2)}
+.copy:hover{border-color:var(--ink);color:var(--ink)}
+.copy:focus-visible{outline:2px solid var(--stamp)}
+.sel{user-select:all}
+footer{padding-block:28px 40px;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;font-family:var(--mono);font-size:.78rem;color:var(--ink-2)}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="wrap bar">
+    <a class="mark" href="#top">ABHIJITH<span>.</span></a>
+    <nav class="links" aria-label="Sections">
+      <a href="#think">How I think</a>
+      <a href="#trovehaul">Trovehaul.ai</a>
+      <a href="#work">Work</a>
+      <a href="#experience">Experience</a>
+      <a href="#misses">Misses</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="iconbtn" id="theme" type="button" aria-label="Switch light or dark theme">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" id="hero">
+    <div class="spot" aria-hidden="true"></div>
+    <div class="wrap">
+      <p class="tag"><span><span class="dot"></span><b>Now:</b> building Trovehaul.ai</span><span>AI intern at Bosch</span><span>Coimbatore, India</span><span>Founder, not a job title</span></p>
+      <h1 class="name" aria-label="Abhijith Chandrasekhar">
+        <span class="ln" data-split>Abhijith</span>
+        <span class="ln" data-split>Chandrasekhar</span>
+      </h1>
+      <div class="hero-grid">
+        <p class="thesis">I write the guardrail before the feature, and I publish what went wrong.</p>
+        <div>
+          <p class="lede">I start from the problem and the number that proves it matters. I keep the model on a short leash, put the hard rules in code, and ship the receipts with the work: <strong>the wins, the misses, and the calls I made on purpose.</strong></p>
+          <div class="cta-row">
+            <a class="btn solid" href="#think">See how I think</a>
+            <a class="btn" href="#trovehaul">What I'm building</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ticker" aria-label="Numbers from my own project write-ups">
+    <div class="track">
+      <span><b>70.19%</b> of carts abandoned: the number Kiran was built against</span>
+      <span><b>81.7%</b> of records matched by rules before any model ran</span>
+      <span><b>0</b> API calls for 19 of 64 reconciliation exceptions</span>
+      <span><b>64 / 64</b> exceptions published, wrong ones included</span>
+      <span><b>23%</b> auto-resolve rate, kept low on purpose</span>
+      <span><b>1</b> price floor the voice agent cannot cross</span>
+      <span class="dup" aria-hidden="true"><b>70.19%</b> of carts abandoned: the number Kiran was built against</span>
+      <span class="dup" aria-hidden="true"><b>81.7%</b> of records matched by rules before any model ran</span>
+      <span class="dup" aria-hidden="true"><b>0</b> API calls for 19 of 64 reconciliation exceptions</span>
+      <span class="dup" aria-hidden="true"><b>64 / 64</b> exceptions published, wrong ones included</span>
+      <span class="dup" aria-hidden="true"><b>23%</b> auto-resolve rate, kept low on purpose</span>
+      <span class="dup" aria-hidden="true"><b>1</b> price floor the voice agent cannot cross</span>
+    </div>
+  </div>
+
+  <!-- ================= HOW I THINK ================= -->
+  <section class="block" id="think">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="tag">How I think</p><h2>Seven rules I keep</h2></div>
+        <p>Titles say where someone sat. These say how I decide. Each rule has a business side and a technical side, because I don't separate the two. Every rule comes with a receipt you can check.</p>
+      </div>
+
+      <article class="rule">
+        <div>
+          <h3 data-words>Start with the number that hurts.</h3>
+          <dl class="lens">
+            <div><dt>Business</dt><dd>Find what the problem costs, who pays for it, and who would pay to make it stop. No number, no project.</dd></div>
+            <div><dt>Tech</dt><dd>That number becomes the spec. It decides what the system optimises and what it must never break.</dd></div>
+          </dl>
+        </div>
+        <aside class="receipt">
+          <div class="src"><span>Kiran · voice agent</span><a href="https://github.com/Abhijith-03/Kiran-ai-cart-negotiation-voice-agent" target="_blank" rel="noopener">repo ↗</a></div>
+          <ul>
+            <li>Opens on Baymard's 49-study average: 70.19% of carts abandoned</li>
+            <li>Names the business flaw first: blanket 10%-off emails give margin to people who'd have paid full price</li>
+            <li>Only then describes the agent</li>
+          </ul>
+          <div class="tot"><span>Problem first</span><span>✓</span></div>
+        </aside>
+      </article>
+
+      <article class="rule">
+        <div>
+          <h3 data-words>Sell the outcome, not the technology.</h3>
+          <dl class="lens">
+            <div><dt>Business</dt><dd>Clients don't buy an LLM. They buy more profit, fewer hours, less risk. I scope the work around the result they'll measure.</dd></div>
+            <div><dt>Tech</dt><dd>Pick whatever reaches that result cheapest and most reliably, even when it's the least exciting option.</dd></div>
+          </dl>
+        </div>
+        <aside class="receipt">
+          <div class="src"><span>ProfitStory.ai + AUTUM AI</span><a href="#experience">see ↓</a></div>
+          <ul>
+            <li>ProfitStory's platform is Result-as-a-Service: paid for outcomes, not software</li>
+            <li>Worked with client accounts on product optimisation, bids and go-to-market</li>
+            <li>AUTUM AI pitched "outcomes, not just outputs" from day one</li>
+          </ul>
+          <div class="tot"><span>Customer's result first</span><span>✓</span></div>
+        </aside>
+      </article>
+
+      <article class="rule">
+        <div>
+          <h3 data-words>Protect the margin in code, not in the prompt.</h3>
+          <dl class="lens">
+            <div><dt>Business</dt><dd>Every automated deal needs a floor the business sets and nobody, human or model, can talk it below.</dd></div>
+            <div><dt>Tech</dt><dd>A prompt is a request; code is a guarantee. The model can read the limit but has no way to change it.</dd></div>
+          </dl>
+        </div>
+        <aside class="receipt">
+          <div class="src"><span>Kiran + ReconIQ</span><a href="https://github.com/Abhijith-03/Kiran-ai-cart-negotiation-voice-agent" target="_blank" rel="noopener">repo ↗</a></div>
+          <ul>
+            <li>The strategist reads <code>min_acceptable_price</code> but never computes it</li>
+            <li>Its discount is clamped in code before the phone rings</li>
+            <li>ReconIQ's most autonomous tier always escalates and never moves money</li>
+          </ul>
+          <div class="tot"><span>Margin protected</span><span>✓</span></div>
+        </aside>
+      </article>
+
+      <article class="rule">
+        <div>
+          <h3 data-words>Make every model call earn its cost.</h3>
+          <dl class="lens">
+            <div><dt>Business</dt><dd>AI spend is a unit cost. If it grows with every order, the business gets worse as it scales.</dd></div>
+            <div><dt>Tech</dt><dd>Plain rules and maths take every case they can. The model only sees what needs judgment, and its fixes become new rules.</dd></div>
+          </dl>
+        </div>
+        <aside class="receipt">
+          <div class="src"><span>ReconIQ · ProfitStory · Data Cleaning</span><a href="https://github.com/Abhijith-03/ReconIQ" target="_blank" rel="noopener">repo ↗</a></div>
+          <ul>
+            <li>81.7% of records matched by rules before any model ran</li>
+            <li>19 of 64 exceptions closed with zero API calls</li>
+            <li>ProfitStory engine: proven maths first, LLM reasoning on top</li>
+          </ul>
+          <div class="tot"><span>Cost falls as it scales</span><span>✓</span></div>
+        </aside>
+      </article>
+
+      <article class="rule">
+        <div>
+          <h3 data-words>Earn the data before building the platform.</h3>
+          <dl class="lens">
+            <div><dt>Business</dt><dd>Start with revenue and real customers, even if it looks unglamorous. Doing the work by hand is how you learn what to automate.</dd></div>
+            <div><dt>Tech</dt><dd>Every real transaction is training data no competitor can copy. The models come from that record, not from guesses.</dd></div>
+          </dl>
+        </div>
+        <aside class="receipt">
+          <div class="src"><span>Trovehaul.ai · strategy</span><a href="#trovehaul">below ↓</a></div>
+          <ul>
+            <li>Starts as a trader running every export itself</li>
+            <li>Each shipment feeds one record: quoted, arrived, went wrong</li>
+            <li>Platform opens to outside buyers only after that record exists</li>
+          </ul>
+          <div class="tot"><span>Distribution, then software</span><span>✓</span></div>
+        </aside>
+      </article>
+
+      <article class="rule">
+        <div>
+          <h3 data-words>Report the number I can defend.</h3>
+          <dl class="lens">
+            <div><dt>Business</dt><dd>Trust is what a customer actually buys. A smaller honest number keeps it; a vanity metric spends it.</dd></div>
+            <div><dt>Tech</dt><dd>Label every metric with its basis, publish every failure case, and never loosen a threshold to look better.</dd></div>
+          </dl>
+        </div>
+        <aside class="receipt">
+          <div class="src"><span>ReconIQ · evaluation</span><a href="https://github.com/Abhijith-03/ReconIQ" target="_blank" rel="noopener">repo ↗</a></div>
+          <ul>
+            <li>Auto-resolve kept at 23%, by design</li>
+            <li>Two match rates, each labelled: 81.7% per record, 65.4% per order</li>
+            <li>All 64 exceptions published, wrong calls included</li>
+          </ul>
+          <div class="tot"><span>Defensible over impressive</span><span>✓</span></div>
+        </aside>
+      </article>
+
+      <article class="rule">
+        <div>
+          <h3 data-words>Claim only what is true today.</h3>
+          <dl class="lens">
+            <div><dt>Business</dt><dd>Credibility is the only asset a new company starts with. Over-claiming to win a deal loses the next ten.</dd></div>
+            <div><dt>Tech</dt><dd>Status lives in the product itself: every feature is marked as it really stands.</dd></div>
+          </dl>
+        </div>
+        <aside class="receipt">
+          <div class="src"><span>Trovehaul.ai · website rules</span><a href="#trovehaul">below ↓</a></div>
+          <ul>
+            <li>No registrations or certifications claimed before they exist</li>
+            <li>Every price marked indicative</li>
+            <li>Each product tagged Building or Planned, never "live" early</li>
+          </ul>
+          <div class="tot"><span>Status, not spin</span><span>✓</span></div>
+        </aside>
+      </article>
+    </div>
+  </section>
+
+  <!-- ================= TROVEHAUL ================= -->
+  <section class="block venture" id="trovehaul">
+    <div class="wrap">
+      <p class="tag">The company I'm building</p>
+      <h2 class="v-name">trovehaul<span>.ai</span></h2>
+      <div class="sec-head" style="margin-top:clamp(24px,4vw,40px);margin-bottom:0">
+        <h3 style="font-size:var(--s2);font-weight:700;font-variation-settings:'wdth' 100;line-height:1.15">The intelligent way to trade with India.</h3>
+        <p>Cross-border sourcing still runs on phone calls, spreadsheets and trust built one deal at a time. Trovehaul starts as a trader, runs every shipment itself, and turns each one into data that trains an AI sourcing platform.</p>
+      </div>
+
+      <div class="memo">
+        <div>
+          <h4>The problem</h4>
+          <p>A buyer abroad can't easily tell which Indian supplier is reliable, what a fair landed price is, or whether the bank details on an invoice are real. Each answer costs days and some risk.</p>
+        </div>
+        <div>
+          <h4>The bet</h4>
+          <p>Run real trades first. Every order teaches the system what was quoted, what arrived and what went wrong. Software built from that record beats software built from guesses.</p>
+        </div>
+        <div>
+          <h4>Why I own it</h4>
+          <p>It joins everything I've built: scoring with hard limits, reconciliation that checks money against records, agents that escalate instead of guessing. Trade is where those habits pay.</p>
+        </div>
+      </div>
+
+      <div class="board" aria-label="Product status">
+        <div class="row"><b>Supplier Scoring</b><p>Ranks suppliers on audits, quality, on-time loading and claims, so orders go to the best record, not the loudest seller.</p><span class="pill build">Building</span></div>
+        <div class="row"><b>Live Pricing</b><p>Landed-cost quote in minutes from market prices, freight, FX and duty, with a guardrail that blocks quotes below margin.</p><span class="pill build">Building</span></div>
+        <div class="row"><b>Fraud Checks</b><p>Verifies buyers and suppliers, screens sanctions lists and flags changed bank details before money moves.</p><span class="pill build">Building</span></div>
+        <div class="row"><b>Auto Documents</b><p>Invoice, packing list and certificate of origin drafted and cross-checked from one order record.</p><span class="pill plan">Planned</span></div>
+        <div class="row"><b>Tracking</b><p>Follows each container door to door and raises an alert the moment something slips.</p><span class="pill plan">Planned</span></div>
+        <div class="row"><b>Market intelligence</b><p>Reads global trade data to choose where we sell. The other five sit on top of it.</p><span class="pill live">In use</span></div>
+      </div>
+
+      <div class="phases">
+        <div class="phase"><span class="tag">Now</span><b>A trader with AI tools</b><p>We run every trade ourselves, starting with the Gulf and Europe. Each shipment trains the system.</p></div>
+        <div class="phase"><span class="tag">Next</span><b>An open trading desk</b><p>Buyers get live quotes, tracking and documents in one portal. Suppliers see their score and demand from abroad.</p></div>
+        <div class="phase"><span class="tag">Later</span><b>An AI trade network</b><p>Any buyer sources any Indian product, with pricing, compliance and logistics handled by the platform.</p></div>
+      </div>
+
+      <div class="v-foot">
+        <small>Export registrations are in progress. Prices are indicative until then. We will not call ourselves the exporter of record before we are one.</small>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= WORK ================= -->
+  <section class="block" id="work">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="tag">Selected work</p><h2>Case files</h2></div>
+      </div>
+
+      <div class="index">
+        <details class="case" data-peek="70.19%|of carts are abandoned. Kiran calls the customer back and negotiates, above a floor it cannot cross." open>
+          <summary><span class="yr">2026</span><span class="tt">Kiran<small>A voice agent that negotiates abandoned carts back into sales</small></span><span class="plus" aria-hidden="true">+</span></summary>
+          <div class="body">
+            <div><h5>Problem</h5><p>Abandoned-cart emails treat a near-buyer and a never-buyer the same and give away margin to both.</p></div>
+            <div><h5>Call I made</h5><p>Split the work in two: <strong>a strategist</strong> reads customer history and picks an opening, <strong>a live agent</strong> negotiates on the phone inside fixed limits.</p></div>
+            <div><h5>Trade-off owned</h5><p>The demo store's Pay button never completes on purpose. The only path to a sale is a successful call, so the test is honest.</p></div>
+            <div><h5>Proof</h5><p>Real n8n runs and a real outbound call. A customer who declined was logged as a valid result, not something to push on.</p></div>
+            <div class="links"><div class="chips"><span>Retell AI</span><span>n8n</span><span>LLM strategy</span><span>Google Sheets</span></div><a href="https://github.com/Abhijith-03/Kiran-ai-cart-negotiation-voice-agent" target="_blank" rel="noopener">github ↗</a></div>
+          </div>
+        </details>
+
+        <details class="case" data-peek="64/64|exceptions published, including the ones the system got wrong.">
+          <summary><span class="yr">2026</span><span class="tt">ReconIQ<small>Three-tier agent for payment reconciliation across ledger, gateway and bank</small></span><span class="plus" aria-hidden="true">+</span></summary>
+          <div class="body">
+            <div><h5>Problem</h5><p>Ledger, gateway and bank disagree all the time. Someone has to confirm every rupee landed and explain every one that didn't.</p></div>
+            <div><h5>Call I made</h5><p>A funnel: exact match, fuzzy match, rules, one bounded LLM call, and only then an agent that investigates with real tools.</p></div>
+            <div><h5>Trade-off owned</h5><p>Kept auto-resolve at 23% and sent every Tier 3 conclusion to a person. Safety I can audit beats a bigger number.</p></div>
+            <div><h5>Proof</h5><p>182 orders: 100% precision and recall on exception detection, 0 false positives. Known limits written up in the README.</p></div>
+            <div class="links"><div class="chips"><span>Python</span><span>OpenAI tool calling</span><span>Pydantic</span><span>LangSmith</span><span>React</span></div><a href="https://github.com/Abhijith-03/ReconIQ" target="_blank" rel="noopener">github ↗</a></div>
+          </div>
+        </details>
+
+        <details class="case" data-peek="3 tiers|Rules, learned patterns, then LLM. Fixes that pass validation become new rules.">
+          <summary><span class="yr">2026</span><span class="tt">Agentic Data Cleaning<small>Six agents that clean structured data and get cheaper as they learn</small></span><span class="plus" aria-hidden="true">+</span></summary>
+          <div class="body">
+            <div><h5>Problem</h5><p>Dirty data blocks every analysis, and "just ask an LLM to fix it" is slow, costly and unexplained.</p></div>
+            <div><h5>Call I made</h5><p>Schema, profiling, anomaly, cleaning, validation and confidence agents in a loop that retries up to three times.</p></div>
+            <div><h5>Trade-off owned</h5><p>Low-confidence fixes go to a person instead of being applied. Every change is logged with its reason and trace ID.</p></div>
+            <div><h5>Proof</h5><p>Confidence bands per tier (rules 0.95+, patterns 0.85+, LLM 0.5 to 0.85) and a precision and recall benchmark runner.</p></div>
+            <div class="links"><div class="chips"><span>LangGraph</span><span>LangChain</span><span>LangSmith</span><span>FastAPI</span><span>Polars</span></div><a href="https://github.com/Abhijith-03/Agentic-Data-Cleaning" target="_blank" rel="noopener">github ↗</a></div>
+          </div>
+        </details>
+
+        <details class="case" data-peek="10-K|Forensic questions answered only from cited excerpts of the filing.">
+          <summary><span class="yr">2026</span><span class="tt">ForenSight AI<small>Forensic research over SEC 10-K filings with cited answers</small></span><span class="plus" aria-hidden="true">+</span></summary>
+          <div class="body">
+            <div><h5>Problem</h5><p>Annual reports hide risk in long text and borderless tables that generic PDF chat tools mangle.</p></div>
+            <div><h5>Call I made</h5><p>Parse by SEC Item from the table of contents, keep page provenance on every chunk, and answer from excerpts only.</p></div>
+            <div><h5>Trade-off owned</h5><p>Answers are narrower because they must cite. That's the point for forensic work.</p></div>
+            <div><h5>Proof</h5><p>Detection modes for anomalies and prediction misses, plus a sentiment-divergence check of narrative tone against liquidity.</p></div>
+            <div class="links"><div class="chips"><span>RAG</span><span>Chroma</span><span>PyMuPDF</span><span>Camelot</span><span>Streamlit</span></div><a href="https://github.com/Abhijith-03/ForenSight-AI-The-Forensic-Intelligence-Platform" target="_blank" rel="noopener">github ↗</a></div>
+          </div>
+        </details>
+
+        <details class="case" data-peek="Agency|I sold AI automation as outcomes, not outputs.">
+          <summary><span class="yr">2025</span><span class="tt">AUTUM AI<small>The AI automation agency I started</small></span><span class="plus" aria-hidden="true">+</span></summary>
+          <div class="body">
+            <div><h5>Problem</h5><p>Small businesses hear about AI agents but have nobody to wire them into their actual workflow.</p></div>
+            <div><h5>Call I made</h5><p>Package the work as four services: agents, workflow automation, model integration and performance monitoring.</p></div>
+            <div><h5>What I learned</h5><p>Clients buy a result they can measure. That shaped how I write every README since: problem, number, proof.</p></div>
+            <div><h5>Proof</h5><p>Brand, site and service offer built and shipped by me. <em>Client results: add before launch.</em></p></div>
+            <div class="links"><div class="chips"><span>Agency</span><span>React</span><span>Automation</span></div></div>
+          </div>
+        </details>
+
+        <details class="case" data-peek="0 reposts|A state sheet makes sure the same article is never posted twice.">
+          <summary><span class="yr">2026</span><span class="tt">LinkedIn Engine<small>AI news to finished LinkedIn post and image, hands-free</small></span><span class="plus" aria-hidden="true">+</span></summary>
+          <div class="body">
+            <div><h5>Problem</h5><p>Posting consistently takes hours a week of reading, writing and design.</p></div>
+            <div><h5>Call I made</h5><p>One 20-node n8n flow: watch a feed, pick the newest unposted story, clean it, write the post, render a graphic, publish.</p></div>
+            <div><h5>Trade-off owned</h5><p>Used a plain sheet as state instead of a database, because duplicate safety mattered more than scale.</p></div>
+            <div><h5>Proof</h5><p>Node-by-node walkthrough in the README so anyone can audit or rebuild it.</p></div>
+            <div class="links"><div class="chips"><span>n8n</span><span>OpenAI</span><span>gpt-image-1</span></div><a href="https://github.com/Abhijith-03/LinkedIn-Engagement-Automation-Engine" target="_blank" rel="noopener">github ↗</a></div>
+          </div>
+        </details>
+
+        <details class="case" data-peek="8 services|Live Binance ticks through a full bronze, silver, gold pipeline.">
+          <summary><span class="yr">2026</span><span class="tt">Crypto Price Pipeline<small>Real-time data engineering, end to end</small></span><span class="plus" aria-hidden="true">+</span></summary>
+          <div class="body">
+            <div><h5>Problem</h5><p>I wanted to own the full streaming stack, not just call an API.</p></div>
+            <div><h5>Call I made</h5><p>WebSocket into Kafka, medallion layers in TimescaleDB, Redis cache, Grafana on top, all in Docker Compose.</p></div>
+            <div><h5>Trade-off owned</h5><p>No API key required, so anyone can run it free on a laptop.</p></div>
+            <div><h5>Proof</h5><p>Runbook, ports and Windows troubleshooting written up.</p></div>
+            <div class="links"><div class="chips"><span>Kafka</span><span>TimescaleDB</span><span>Redis</span><span>Grafana</span></div><a href="https://github.com/Abhijith-03/crypto-price-pipeline" target="_blank" rel="noopener">github ↗</a></div>
+          </div>
+        </details>
+
+        <details class="case" data-peek="Access|Built for blind, deaf and multilingual learners first.">
+          <summary><span class="yr">2025</span><span class="tt">Ariviyam<small>Inclusive learning platform for learners most tools leave out</small></span><span class="plus" aria-hidden="true">+</span></summary>
+          <div class="body">
+            <div><h5>Problem</h5><p>Ed-tech assumes one kind of learner. Students with visual, hearing or language barriers fall behind.</p></div>
+            <div><h5>Call I made</h5><p>Design for the hardest case first: personalised paths, multilingual support and accessibility built in, not bolted on.</p></div>
+            <div><h5>Earlier work</h5><p>From the same year: TalentScout (AI interviewer), threat detection on video with YOLOv8, and market sentiment analysis.</p></div>
+            <div><h5>Proof</h5><p>Repos are public. These were my first ideas taken from a problem to a working build.</p></div>
+            <div class="links"><div class="chips"><span>EdTech</span><span>Accessibility</span></div><a href="https://github.com/Abhijith-03/ARIVIYAM" target="_blank" rel="noopener">github ↗</a></div>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+  <div class="peek" id="peek" aria-hidden="true"></div>
+
+
+  <!-- ================= EXPERIENCE ================= -->
+  <section class="block" id="experience" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="tag">Inside other teams</p><h2>The problem I was handed</h2></div>
+        <p>Same habits, someone else's company. Each entry leads with the question I owned, then what I did about it. The title is in small print on purpose.</p>
+      </div>
+      <div class="xp">
+        <div class="xp-row">
+          <div><div class="org">Bosch Global Software Technologies</div><div class="meta"><span>AI Intern</span><span>Jul 2026 to now</span><span>PyTorch · Hugging Face · llama.cpp</span></div></div>
+          <div>
+            <p class="ask">How small can a language model get before it stops being useful on a device with almost no memory?</p>
+            <ul>
+              <li>Compressing LLMs with <strong>quantization, pruning</strong> and other optimisation techniques</li>
+              <li>Testing formats and settings side by side to find the trade-off between size, accuracy and inference speed</li>
+              <li>Preparing heavily compressed models for <strong>edge deployment</strong> on constrained hardware</li>
+            </ul>
+          </div>
+        </div>
+        <div class="xp-row">
+          <div><div class="org">ProfitStory.ai</div><div class="meta"><span>LLM Intern</span><span>Jun 2025 to Dec 2025</span><span>Python · CrewAI · SQL</span></div></div>
+          <div>
+            <p class="ask">Which Amazon ad campaigns should a seller change, and can the answer be trusted with their money?</p>
+            <ul>
+              <li>Built a <strong>hybrid recommendation engine</strong> for the Result-as-a-Service platform: proven maths first, LLM-driven reasoning on top</li>
+              <li>Worked across sales, inventory, campaign and promotion data to drive Amazon PPC recommendations</li>
+              <li>Joined business data with autonomous AI recommendations so the team could tune campaigns for client profit</li>
+              <li>Worked directly with <strong>many client accounts</strong> on product optimisation, bid adjustments and go-to-market strategy, so I saw each recommendation land on a real seller's margin</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="side">
+        <div><span class="tag">Study</span><b>M.Sc Integrated, Data Science</b><p>Coimbatore Institute of Technology, 2022 to now. CGPA 8.24 through 8th semester.</p></div>
+        <div><span class="tag">Owned for others</span><b>Internship Coordinator</b><p>Ran internship coordination for the MSc Data Science programme, 2024 to 2025. Also Treasurer of CIT's Japan Horizons Club.</p></div>
+        <div><span class="tag">Toolbox</span><b>Python, SQL, and the stack around them</b><p>LangChain, CrewAI, Pandas, scikit-learn, OpenCV, PostgreSQL, MySQL, AWS, n8n, Git.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MISSES ================= -->
+  <section class="block" id="misses" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="tag">Transparency</p><h2>What didn't work yet</h2></div>
+        <p>Every project has a gap between what it claims and what it does. Here are mine, with what I'm doing about each.</p>
+      </div>
+      <div class="misses">
+        <div class="miss">
+          <div class="n"><em>29</em>/30</div>
+          <p>My LLM judge flagged 29 of 30 ReconIQ investigations as overreach, including correct ones. The judge was wrong, not the agent: it lacked the tool documentation the agent had.</p>
+          <p class="fix"><b>Fix:</b> give the judge the same tool semantics, then trust it as a quality gate.</p>
+        </div>
+        <div class="miss">
+          <div class="n"><em>9</em> cases</div>
+          <p>Nine exceptions get a different root-cause label between runs when the evidence itself is ambiguous. The decision to escalate never changed, but the label did.</p>
+          <p class="fix"><b>Fix:</b> majority vote across samples for those case types only.</p>
+        </div>
+        <div class="miss">
+          <div class="n"><em>3</em>/30</div>
+          <p>Only 3 of 30 Tier 3 cases had ground truth to verify against. They were all correct, but 10% coverage is too thin to call the tier proven.</p>
+          <p class="fix"><b>Fix:</b> grow the labelled set before claiming accuracy.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ARC ================= -->
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="tag">Build log</p><h2>How my work changed</h2></div>
+        <p>Read straight from my commit history. The tools got better, but the bigger change is in what I check before I call something done.</p>
+      </div>
+      <div class="arc">
+        <div>
+          <span class="tag">2025 · build the feature</span>
+          <h3>Can I make it work?</h3>
+          <ol class="log">
+            <li><time>Mar 2025</time><b>Ariviyam</b> <span>· inclusive learning platform</span></li>
+            <li><time>Mar 2025</time><b>Threat detection</b> <span>· YOLOv8 on uploaded video</span></li>
+            <li><time>Apr 2025</time><b>TalentScout</b> <span>· AI interviewer with a hiring score</span></li>
+            <li><time>Jun 2025</time><b>ProfitStory.ai</b> <span>· ad engine, client bids and GTM</span></li>
+            <li><time>Jul 2025</time><b>Compliance analyser, RAG tools</b> <span>· document intelligence</span></li>
+            <li><time>Aug 2025</time><b>AUTUM AI</b> <span>· started the agency</span></li>
+          </ol>
+        </div>
+        <div>
+          <span class="tag">2026 · build the judgment in</span>
+          <h3>Can I prove it, and stop it going wrong?</h3>
+          <ol class="log now">
+            <li><time>Apr 2026</time><b>Agentic Data Cleaning, ForenSight AI</b> <span>· confidence scores, citations</span></li>
+            <li><time>May 2026</time><b>Crypto pipeline</b> <span>· owning the whole data stack</span></li>
+            <li><time>Jul 2026</time><b>Bosch</b> <span>· compressing LLMs for edge devices</span></li>
+            <li><time>Sep 2026</time><b>ReconIQ</b> <span>· every miss published</span></li>
+            <li><time>Sep 2026</time><b>Kiran</b> <span>· price floor enforced in code</span></li>
+            <li><time>Oct 2026</time><b>Trovehaul.ai</b> <span>· all of it, applied to real trade</span></li>
+          </ol>
+        </div>
+      </div>
+      <p class="shift">In 2025 I asked whether it worked. Now I ask what it's allowed to do, who checks it, and what I'll tell people when it fails.</p>
+    </div>
+  </section>
+
+  <!-- ================= CONTACT ================= -->
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <p class="tag">Building something that has to be trusted?</p>
+      <h2><a href="https://www.linkedin.com/in/abhijith-chandrasekhar04" target="_blank" rel="noopener">Let's talk.</a></h2>
+      <div class="c-grid">
+        <div><span class="sel" id="email">cabhijithcbe@gmail.com</span><button class="copy" id="copy" type="button">Copy</button><p>Email me directly. <a href="https://www.linkedin.com/in/abhijith-chandrasekhar04" target="_blank" rel="noopener">LinkedIn ↗</a> works too.</p></div>
+        <div><a href="https://github.com/Abhijith-03" target="_blank" rel="noopener">GitHub ↗</a><p>Every project above, with its README and its misses.</p></div>
+      </div>
+    </div>
+    <footer class="wrap">
+      <span>© 2026 Abhijith Chandrasekhar</span>
+      <span>Every number on this page links back to a public README.</span>
+    </footer>
+  </section>
+</main>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  try{var t=localStorage.getItem('ab-theme');if(t)root.setAttribute('data-theme',t);}catch(e){}
+  document.getElementById('theme').addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+    var next=cur==='dark'?'light':'dark';root.setAttribute('data-theme',next);
+    try{localStorage.setItem('ab-theme',next);}catch(e){}
+  });
+
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* hero name: split into letters that lift on load and nudge away from the cursor */
+  document.querySelectorAll('[data-split]').forEach(function(el,li){
+    var txt=el.textContent;el.textContent='';
+    txt.split('').forEach(function(c,i){
+      var s=document.createElement('span');s.className='ch';s.textContent=c;s.setAttribute('aria-hidden','true');
+      if(!reduce){s.style.transform='translateY(.18em)';setTimeout(function(){s.style.transform='';},80+li*160+i*35);}
+      el.appendChild(s);
+    });
+  });
+
+  var hero=document.getElementById('hero');
+  hero.addEventListener('pointermove',function(e){
+    var r=hero.getBoundingClientRect();
+    hero.style.setProperty('--mx',(e.clientX-r.left)+'px');
+    hero.style.setProperty('--my',(e.clientY-r.top)+'px');
+  });
+
+  var cp=document.getElementById('copy');
+  cp.addEventListener('click',function(){
+    var t=document.getElementById('email').textContent;
+    function sel(){var r=document.createRange();r.selectNodeContents(document.getElementById('email'));var s=getSelection();s.removeAllRanges();s.addRange(r);cp.textContent='Selected';}
+    try{navigator.clipboard.writeText(t).then(function(){cp.textContent='Copied';},sel);}catch(e){sel();}
+  });
+
+  /* rule headlines: words fill in as each line crosses the middle of the screen */
+  var heads=[].slice.call(document.querySelectorAll('[data-words]'));
+  heads.forEach(function(h){
+    var words=h.textContent.trim().split(/\s+/);h.textContent='';
+    words.forEach(function(w,i){var s=document.createElement('span');s.className='w';s.textContent=w;h.appendChild(s);if(i<words.length-1)h.appendChild(document.createTextNode(' '));});
+  });
+  function fill(){
+    var vh=innerHeight;
+    heads.forEach(function(h){
+      var r=h.getBoundingClientRect();
+      var p=reduce?1:Math.min(1,Math.max(0,(vh*.85-r.top)/(vh*.45)));
+      var ws=h.querySelectorAll('.w'),n=Math.round(p*ws.length);
+      ws.forEach(function(w,i){w.classList.toggle('on',i<n);});
+    });
+  }
+  fill();addEventListener('scroll',fill,{passive:true});addEventListener('resize',fill);
+
+  /* case rows: a stamp-coloured note follows the cursor with the headline number */
+  var peek=document.getElementById('peek');
+  if(matchMedia('(hover:hover)').matches){
+    document.querySelectorAll('.case').forEach(function(c){
+      var parts=(c.getAttribute('data-peek')||'').split('|');
+      var sum=c.querySelector('summary');
+      sum.addEventListener('pointerenter',function(){peek.innerHTML='';var b=document.createElement('b');b.textContent=parts[0];peek.appendChild(b);peek.appendChild(document.createTextNode(parts[1]||''));peek.style.opacity=1;});
+      sum.addEventListener('pointerleave',function(){peek.style.opacity=0;});
+      sum.addEventListener('pointermove',function(e){
+        var x=Math.min(e.clientX+22,innerWidth-290),y=Math.min(e.clientY+22,innerHeight-160);
+        peek.style.transform='translate('+x+'px,'+y+'px)';
+      });
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
